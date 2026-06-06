@@ -429,6 +429,30 @@ export default function App() {
     }
   }, [apiKey, moves]);
 
+  // ── Reset ───────────────────────────────────────────────────────────────────
+
+  const handleReset = useCallback(() => {
+    if (!window.confirm('Clear all game data and start over?')) return;
+    localStorage.removeItem(GAME_INFO_KEY);
+    localStorage.removeItem(MOVES_KEY);
+    localStorage.removeItem(PREVIEWS_KEY);
+    localStorage.removeItem(OCR_TOKENS_KEY);
+    setGameInfo(defaultGameInfo);
+    setMoves([]);
+    setCurrentPly(-1);
+    setCorrectionPly(null);
+    setPages([null, null]);
+    setPreviews([null, null]);
+    setPageStatus(['idle', 'idle']);
+    setOverallStatus('idle');
+    setOverallProgress(0);
+    setRawOcrText('');
+    setShowRaw(false);
+    setCorrectionLog([]);
+    setShowCorrectionLog(false);
+    setRescanStatus('idle');
+  }, []);
+
   // ── PGN / analysis ──────────────────────────────────────────────────────────
 
   const handleDownloadPgn = useCallback(() => {
@@ -468,6 +492,9 @@ export default function App() {
             <span className="stat invalid">{invalidCount} invalid</span>
           </div>
         )}
+        <button className="btn-reset" onClick={handleReset} title="Clear all data and start over">
+          Reset
+        </button>
       </header>
 
       <div className="app-body">

@@ -26,8 +26,9 @@ export default function BoardPanel({
   onTextCorrection,
   onSwapColors,
 }: Props) {
-  const [textInput, setTextInput]         = useState('');
+  const [textInput, setTextInput]           = useState('');
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
+  const [flipped, setFlipped]               = useState(false);
 
   const isCorrecting = correctionPly !== null;
   const totalPlies   = moves.length;
@@ -117,6 +118,7 @@ export default function BoardPanel({
           onSquareClick={handleSquareClick}
           arePiecesDraggable={true}
           boardWidth={560}
+          boardOrientation={flipped ? 'black' : 'white'}
           customSquareStyles={legalDots}
           customBoardStyle={{
             borderRadius: '6px',
@@ -151,6 +153,12 @@ export default function BoardPanel({
           }}
           title="End (→→)"
         >▶|</button>
+
+        <button
+          className="nav-btn flip-btn"
+          onClick={() => setFlipped(f => !f)}
+          title="Flip board"
+        >⇅</button>
       </div>
 
       {/* Correction panel */}
